@@ -28,6 +28,10 @@ defmodule ExViber.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:httpoison, "~> 0.9"},
+      {:poison, "~> 3.1"},
+      {:bypass, "~> 0.6.0", only: :test},
+    ]
   end
 end
