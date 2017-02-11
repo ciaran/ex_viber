@@ -13,6 +13,16 @@ def deps do
 end
 ```
 
+## Configuration
+
+You must give your authentication token provided in the Viber mobile app:
+
+```elixir
+config :ex_viber,
+	token: "YOUR-AUTH-TOKEN"
+```
+
+
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/ex_viber](https://hexdocs.pm/ex_viber).
