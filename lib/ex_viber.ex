@@ -26,7 +26,7 @@ defmodule ExViber do
   end
 
   defp post(path, data) do
-    headers = %{"X-Viber-Auth-Token" => get_token()}
+    headers = %{"X-Viber-Auth-Token" => get_token(), "Content-Type" => "application/json"}
     body = Poison.encode!(data)
 
     {:ok, response} = HTTPoison.post(get_endpoint() <> path, body, headers)
