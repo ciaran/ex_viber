@@ -1,6 +1,7 @@
 defmodule ExViberTest do
   use ExUnit.Case
   doctest ExViber
+  import BypassRoutes
 
   setup do
     bypass = Bypass.open
@@ -10,13 +11,17 @@ defmodule ExViberTest do
   end
 
   test "set webhook", %{bypass: bypass} do
-    Bypass.expect(bypass, fn conn = %{request_path: "/set_webhook"} ->
-      send_file(conn, "response/set_webhook.json")
-    end)
+    bypass_routes(bypass) do
+      plug Plug.Parsers, parsers: [:json], json_decoder: Poison
 
-    ExViber.set_webhook("http://example.com")
+      post "/set_webhook" do
+        ExViberTest.send_file conn, "set_webhook.json"
+      end
+    end
+
+    assert {:ok, %{"status" => 0}} = ExViber.set_webhook("http://example.com")
   end
 
-  defp send_file(conn, file),
-    do: Plug.Conn.resp(conn, 200, File.read!("test/fixtures/" <> file))
+  def send_file(conn, file),
+    do: Plug.Conn.send_resp(conn, 200, File.read!("test/fixtures/response/" <> file))
 end

@@ -30,8 +30,10 @@ defmodule ExViber.Mixfile do
   defp deps do
     [
       {:httpoison, "~> 0.9"},
-      {:poison, "~> 3.1"},
+      {:poison, "~> 3.1", override: true},
+
       {:bypass, "~> 0.6.0", only: :test},
+      {:trot, "~> 0.6.0", github: "hexedpackets/trot"},
     ]
   end
 end
