@@ -7,6 +7,9 @@ defmodule ExViber do
   defp get_token,
     do: Application.get_env(:ex_viber, :token)
 
+  defp get_sender,
+    do: Application.get_env(:ex_viber, :sender)
+
   @doc """
   Set the webhook for the bot, receiving all event types.
   """
@@ -21,8 +24,15 @@ defmodule ExViber do
     post "/set_webhook", %{url: url, event_types: event_types}
   end
 
-  def send_message(message) do
-    post "/send_message", message
+  def send_message(profile = %ExViber.UserProfile{}, message) do
+    data =
+      message
+      |> Map.from_struct
+      |> Map.merge(%{
+        receiver: profile.id,
+        sender: get_sender(),
+      })
+    post "/send_message", data
   end
 
   defp post(path, data) do
@@ -30,10 +40,10 @@ defmodule ExViber do
     body = Poison.encode!(data)
 
     {:ok, response} = HTTPoison.post(get_endpoint() <> path, body, headers)
-    result = Poison.decode!(response.body)
+    result = Poison.decode!(response.body, keys: :atoms)
 
     case result do
-      %{"status" => 0} ->
+      %{status: 0} ->
         {:ok, result}
       _ ->
         {:error, result}

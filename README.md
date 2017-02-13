@@ -19,7 +19,11 @@ You must give your authentication token provided in the Viber mobile app:
 
 ```elixir
 config :ex_viber,
-	token: "YOUR-AUTH-TOKEN"
+	token: "YOUR-AUTH-TOKEN",
+	sender: %{
+		name: "Bot Name",
+		avatar: "Optional Avatar URL"
+	}
 ```
 
 

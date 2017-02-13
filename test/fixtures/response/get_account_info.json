@@ -1,0 +1,27 @@
+{
+	"status": 0,
+	"status_message": "ok",
+	"id": "pa:75346594275468546724",
+	"name": "account name",
+	"uri": "accountUri",
+	"icon": "http://example.com",
+	"background": "http://example.com",
+	"category": "category",
+	"subcategory": "sub category",
+	"location": {
+		"lon": 0.1,
+		"lat": 0.2
+	},
+	"country": "UK",
+	"webhook": "https://my.site.com",
+	"event_types": ["delivered", "seen"],
+	"subscribers_count": 35,
+	"members": [
+		{
+			"id": "01234567890A=",
+			"name": "my name",
+			"avatar": "http://example.com",
+			"role": "admin"
+		}
+	]
+}
