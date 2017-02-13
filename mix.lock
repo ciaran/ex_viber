@@ -1,5 +1,5 @@
 %{"bypass": {:hex, :bypass, "0.6.0", "fd0a8004fada4464e2ba98497755310b892a097f2fd975f4f787cf264066a335", [:mix], [{:cowboy, "~> 1.0", [hex: :cowboy, optional: false]}, {:plug, "~> 1.0", [hex: :plug, optional: false]}]},
-  "bypass_routes": {:git, "https://github.com/ciaran/bypass_routes.git", "12eadde2db038ea5235ad81e165de39c5b1e9086", []},
+  "bypass_routes": {:git, "https://github.com/ciaran/bypass_routes.git", "a9aa474c006f6da2f431f7fc425b191d2afb6db8", []},
   "calliope": {:hex, :calliope, "0.3.0", "81c2937b27094eee8f8a3fce5effb9140cb8a1fbc03620c6ff57a798d400a3ce", [:mix], []},
   "certifi": {:hex, :certifi, "0.7.0", "861a57f3808f7eb0c2d1802afeaae0fa5de813b0df0979153cbafcd853ababaf", [:rebar3], []},
   "cowboy": {:hex, :cowboy, "1.1.2", "61ac29ea970389a88eca5a65601460162d370a70018afe6f949a29dca91f3bb0", [:rebar3], [{:cowlib, "~> 1.0.2", [hex: :cowlib, optional: false]}, {:ranch, "~> 1.3.2", [hex: :ranch, optional: false]}]},
