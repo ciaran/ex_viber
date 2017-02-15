@@ -1,5 +1,5 @@
 defmodule ExViber.TextMessage do
-  defstruct [:timestamp, :token, :text, type: "text"]
+  defstruct [:timestamp, :token, :text, :keyboard, type: "text"]
 end
 
 defmodule ExViber.VideoMessage do
