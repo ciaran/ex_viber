@@ -20,8 +20,19 @@ defmodule ExViber do
   @doc """
   Set the webhook for the bot, receiving only the event types specified.
   """
-  def set_webhook(url, event_types) when is_list(event_types) do
-    post "/set_webhook", %{url: url, event_types: event_types}
+  def set_webhook(url, event_types, is_inline \\ false) when is_list(event_types) do
+    post "/set_webhook", %{url: url, event_types: event_types, is_inline: is_inline}
+  end
+
+  def send_inline_response(receiver, chat_id, keyboard) do
+    data =
+      %{
+        chat_id: chat_id,
+        keyboard: keyboard,
+        min_api_version: 2,
+        receiver: receiver
+      }
+    post "/send_message", data
   end
 
   def send_message(profile = %ExViber.UserProfile{}, message) do
@@ -29,13 +40,14 @@ defmodule ExViber do
       message
       |> Map.from_struct
       |> Map.merge(%{
+        min_api_version: 2,
         receiver: profile.id,
         sender: get_sender(),
       })
     post "/send_message", data
   end
 
-  defp post(path, data) do
+  def post(path, data) do
     headers = %{"X-Viber-Auth-Token" => get_token(), "Content-Type" => "application/json"}
     body = Poison.encode!(data)
 

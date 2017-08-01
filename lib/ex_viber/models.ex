@@ -1,9 +1,9 @@
 defmodule ExViber.TextMessage do
-  defstruct [:timestamp, :token, :text, :keyboard, type: "text"]
+  defstruct [:timestamp, :token, :chat_id, :text, :keyboard, type: "text"]
 end
 
 defmodule ExViber.VideoMessage do
-  defstruct [:timestamp, :token, :media, :size, :thumbnail, type: "video"]
+  defstruct [:timestamp, :token, :chat_id, :media, :size, :thumbnail, type: "video"]
 end
 
 defmodule ExViber.UserProfile do
