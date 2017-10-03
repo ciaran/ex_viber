@@ -29,7 +29,7 @@ defmodule ExViber do
       %{
         chat_id: chat_id,
         keyboard: keyboard,
-        min_api_version: 2,
+        min_api_version: 3,
         receiver: receiver
       }
     post "/send_message", data
@@ -40,7 +40,7 @@ defmodule ExViber do
       message
       |> Map.from_struct
       |> Map.merge(%{
-        min_api_version: 2,
+        min_api_version: 3,
         receiver: profile.id,
         sender: get_sender(),
       })
