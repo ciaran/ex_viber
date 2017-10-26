@@ -29,7 +29,7 @@ defmodule ExViber do
       %{
         chat_id: chat_id,
         keyboard: keyboard,
-        min_api_version: 3,
+        min_api_version: 3.1,
         receiver: receiver
       }
     post "/send_message", data
