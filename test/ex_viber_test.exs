@@ -36,7 +36,7 @@ defmodule ExViberTest do
       end
     end
 
-    assert {:ok, %{status: 0}} = ExViber.send_message(%UserProfile{id: "foo"}, %TextMessage{text: "hi"})
+    assert {:ok, %{status: 0}} = ExViber.send_message(%TextMessage{text: "hi"}, receiver: %UserProfile{id: "foo"}, chat_id: nil)
   end
 
   def send_file(conn, file),

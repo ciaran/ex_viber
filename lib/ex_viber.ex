@@ -1,6 +1,8 @@
 defmodule ExViber do
   require Logger
 
+  @min_api_version 3.1
+
   defp get_endpoint,
     do: Application.get_env(:ex_viber, :endpoint, "https://chatapi.viber.com/pa")
 
@@ -24,26 +26,35 @@ defmodule ExViber do
     post "/set_webhook", %{url: url, event_types: event_types, is_inline: is_inline}
   end
 
+  # There are three variations to send messages. Variations 2 and 3 are relevant for Chat Extensions.
+  # 1 - “receiver” only - for use with Public Accounts only. (Requires subscription to the PA).
+  # 2 - “chat_id” only - message sent to all participants in the inline conversation,
+  #     requires “reply_type” message.
+  # 3 - “chat_id” and “receiver” - message is sent to the sender of the message in the specific conversation,
+  #     requires “reply_type” query (Keyboard only).
   def send_inline_response(receiver, chat_id, keyboard) do
-    data =
-      %{
-        chat_id: chat_id,
-        keyboard: keyboard,
-        min_api_version: 3.1,
-        receiver: receiver
-      }
-    post "/send_message", data
+    send_message(%ExViber.KeyboardMessage{keyboard: keyboard}, receiver: receiver, chat_id: chat_id)
   end
 
-  def send_message(profile = %ExViber.UserProfile{}, message) do
+  def send_message(message, receiver: receiver = %ExViber.UserProfile{}, chat_id: chat_id) do
+    send_message(message, receiver: receiver.id, chat_id: chat_id)
+  end
+
+  def send_message(message, receiver: receiver, chat_id: chat_id) do
     data =
       message
       |> Map.from_struct
       |> Map.merge(%{
-        min_api_version: 3,
-        receiver: profile.id,
+        chat_id: chat_id,
+        min_api_version: @min_api_version,
         sender: get_sender(),
       })
+
+    data =
+      if !is_nil(receiver),
+        do: Map.put(data, :receiver, receiver),
+        else: data
+
     post "/send_message", data
   end
 
