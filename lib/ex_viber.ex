@@ -44,8 +44,8 @@ defmodule ExViber do
     data =
       message
       |> Map.from_struct
+      |> Map.delete(:chat_id)
       |> Map.merge(%{
-        chat_id: chat_id,
         min_api_version: @min_api_version,
         sender: get_sender(),
       })
@@ -53,6 +53,11 @@ defmodule ExViber do
     data =
       if !is_nil(receiver),
         do: Map.put(data, :receiver, receiver),
+        else: data
+
+    data =
+      if !is_nil(chat_id),
+        do: Map.put(data, :chat_id, chat_id),
         else: data
 
     post "/send_message", data
