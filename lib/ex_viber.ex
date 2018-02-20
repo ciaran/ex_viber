@@ -1,7 +1,8 @@
 defmodule ExViber do
   require Logger
 
-  @min_api_version 3.1
+  def min_api_version,
+    do: Application.get_env(:ex_viber, :api_version, 3.1)
 
   defp get_endpoint,
     do: Application.get_env(:ex_viber, :endpoint, "https://chatapi.viber.com/pa")
@@ -46,7 +47,7 @@ defmodule ExViber do
       |> Map.from_struct
       |> Map.delete(:chat_id)
       |> Map.merge(%{
-        min_api_version: @min_api_version,
+        min_api_version: min_api_version(),
         sender: get_sender(),
       })
 
