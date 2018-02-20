@@ -15,5 +15,5 @@ defmodule ExViber.VideoMessage do
 end
 
 defmodule ExViber.UserProfile do
-  defstruct [:id, :name, :avatar, :country, :language]
+  defstruct [:id, :name, :avatar, :country, :language, :api_version]
 end
