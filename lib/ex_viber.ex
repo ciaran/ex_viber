@@ -73,6 +73,9 @@ defmodule ExViber do
     case result do
       %{status: 0} ->
         {:ok, result}
+      %{status: status, status_message: message} ->
+        Logger.error("Viber responded with status #{inspect status}, error: #{inspect message}")
+        {:error, result}
       _ ->
         {:error, result}
     end
