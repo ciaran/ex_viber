@@ -68,7 +68,11 @@ defmodule ExViber do
     headers = %{"X-Viber-Auth-Token" => get_token(), "Content-Type" => "application/json"}
     body = Poison.encode!(data)
 
-    {:ok, response} = HTTPoison.post(get_endpoint() <> path, body, headers)
+    HTTPoison.post(get_endpoint() <> path, body, headers)
+    |> handle_result()
+  end
+
+  defp handle_result({:ok, response}) do
     result = Poison.decode!(response.body, keys: :atoms)
 
     case result do
@@ -77,8 +81,11 @@ defmodule ExViber do
       %{status: status, status_message: message} ->
         Logger.error("Viber responded with status #{inspect status}, error: #{inspect message}")
         {:error, result}
-      _ ->
-        {:error, result}
     end
+  end
+
+  defp handle_result({:error, %HTTPoison.Error{reason: error}}) do
+    Logger.error("Request to Viber failed: #{inspect error}")
+    {:error, error}
   end
 end
