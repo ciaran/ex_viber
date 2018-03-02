@@ -28,6 +28,7 @@ defmodule ExViberTest do
       plug Plug.Parsers, parsers: [:json], json_decoder: Poison
 
       post "/send_message" do
+        assert conn.params["min_api_version"] == 7.2
         assert conn.params["receiver"] == "foo"
         assert conn.params["type"] == "text"
         assert conn.params["text"] == "hi"
@@ -36,7 +37,7 @@ defmodule ExViberTest do
       end
     end
 
-    assert {:ok, %{status: 0}} = ExViber.send_message(%TextMessage{text: "hi"}, receiver: %UserProfile{id: "foo"}, chat_id: nil)
+    assert {:ok, %{status: 0}} = ExViber.send_message(%TextMessage{text: "hi"}, receiver: %UserProfile{id: "foo"}, chat_id: nil, opts: [api_version: 7.2])
   end
 
   def send_file(conn, file),

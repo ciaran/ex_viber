@@ -33,21 +33,27 @@ defmodule ExViber do
   #     requires “reply_type” message.
   # 3 - “chat_id” and “receiver” - message is sent to the sender of the message in the specific conversation,
   #     requires “reply_type” query (Keyboard only).
-  def send_inline_response(receiver, chat_id, keyboard) do
-    send_message(%ExViber.KeyboardMessage{keyboard: keyboard}, receiver: receiver, chat_id: chat_id)
-  end
-
-  def send_message(message, receiver: receiver = %ExViber.UserProfile{}, chat_id: chat_id) do
-    send_message(message, receiver: receiver.id, chat_id: chat_id)
+  def send_inline_response(receiver, chat_id, keyboard, opts \\ []) do
+    send_message(%ExViber.KeyboardMessage{keyboard: keyboard}, receiver: receiver, chat_id: chat_id, opts: opts)
   end
 
   def send_message(message, receiver: receiver, chat_id: chat_id) do
+    send_message(message, receiver: receiver, chat_id: chat_id, opts: [])
+  end
+
+  def send_message(message, receiver: receiver = %ExViber.UserProfile{}, chat_id: chat_id, opts: opts) do
+    send_message(message, receiver: receiver.id, chat_id: chat_id, opts: opts)
+  end
+
+  def send_message(message, receiver: receiver, chat_id: chat_id, opts: opts) do
+    opts = default_options(opts)
+
     data =
       message
       |> Map.from_struct
       |> Map.delete(:chat_id)
       |> Map.merge(%{
-        min_api_version: min_api_version(),
+        min_api_version: opts[:api_version],
         sender: get_sender(),
       })
 
@@ -87,5 +93,11 @@ defmodule ExViber do
   defp handle_result({:error, %HTTPoison.Error{reason: error}}, _data) do
     Logger.error("Request to Viber failed: #{inspect error}")
     {:error, error}
+  end
+
+  defp default_options(options) do
+    [
+      api_version: min_api_version(),
+    ] |> Keyword.merge(options)
   end
 end
