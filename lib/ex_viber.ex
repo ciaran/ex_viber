@@ -93,8 +93,7 @@ defmodule ExViber do
   end
 
   defp handle_result({:error, %HTTPoison.Error{reason: error}}) do
-    Logger.error("Request to Viber failed: #{inspect error}")
-    {:error, error}
+    {:error, "Request to Viber failed: #{inspect error}"}
   end
 
   defp default_options(options) do
