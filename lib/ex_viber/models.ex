@@ -14,6 +14,14 @@ defmodule ExViber.VideoMessage do
   defstruct [:timestamp, :token, :chat_id, :media, :size, :thumbnail, :keyboard, type: "video"]
 end
 
+defmodule ExViber.PictureMessage do
+  defstruct [:timestamp, :token, :chat_id, :media, :text, :thumbnail, :keyboard, type: "picture"]
+end
+
+defmodule ExViber.UrlMessage do
+  defstruct [:timestamp, :token, :chat_id, :media, :keyboard, type: "url"]
+end
+
 defmodule ExViber.UserProfile do
   defstruct [:id, :name, :avatar, :country, :language, :api_version]
 end
