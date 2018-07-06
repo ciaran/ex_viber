@@ -50,7 +50,7 @@ defmodule ExViber do
 
     data =
       message
-      |> Map.from_struct
+      |> remove_struct()
       |> Map.delete(:chat_id)
       |> Map.merge(%{
         min_api_version: opts[:api_version],
@@ -101,4 +101,9 @@ defmodule ExViber do
       api_version: min_api_version(),
     ] |> Keyword.merge(options)
   end
+
+  defp remove_struct(struct = %_{}),
+    do: Map.from_struct(struct)
+  defp remove_struct(map) when is_map(map),
+    do: map
 end
