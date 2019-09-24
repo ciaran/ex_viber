@@ -46,16 +46,7 @@ defmodule ExViber do
   end
 
   def send_message(message, receiver: receiver, chat_id: chat_id, opts: opts) do
-    opts = default_options(opts)
-
-    data =
-      message
-      |> remove_struct()
-      |> Map.delete(:chat_id)
-      |> Map.merge(%{
-        min_api_version: opts[:api_version],
-        sender: get_sender(),
-      })
+    data = construct_message(message, opts)
 
     data =
       if !is_nil(receiver),
@@ -68,6 +59,27 @@ defmodule ExViber do
         else: data
 
     post "/send_message", data
+  end
+
+  def broadcast_message(message, broadcast_list) when is_list(broadcast_list) do
+    data =
+      message
+      |> construct_message()
+      |> Map.put(:broadcast_list, broadcast_list)
+
+    post "/broadcast_message", data
+  end
+
+  defp construct_message(message, opts \\ []) do
+    opts = default_options(opts)
+
+    message
+    |> remove_struct()
+    |> Map.delete(:chat_id)
+    |> Map.merge(%{
+      min_api_version: opts[:api_version],
+      sender: get_sender(),
+    })
   end
 
   def post(path, data) do
